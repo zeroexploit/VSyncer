@@ -18,9 +18,9 @@
 int main(int argc, char** argv)
 {
     // Say Hello and parse the Command Line Arguments
-    std::cout << "VSyncer v.1.0.0\n\nUsage: vsyncer [Filename Convention] [Video Folder] [Start Time] [End Time] [Output Format] [Required Video Codec] [Required Audio Codec]\n" << std::endl;
+    std::cout << "VSyncer v.1.1.0\n\nUsage: vsyncer [Filename Convention] [Video Folder] [Start Time] [End Time] [Output Format] [Required Video Codec] [Required Audio Codec] [Video Encoder] [Audio Encoder]\n" << std::endl;
     
-    if(argc < 8)
+    if(argc < 10)
     {
         std::cout << "Not enough Parameters provided! Exiting..." << std::endl;
         return EXIT_FAILURE;
@@ -31,8 +31,10 @@ int main(int argc, char** argv)
     std::string timestringStart = std::string(argv[3]);
     std::string timestringEnd = std::string(argv[4]);
     std::string outputFormat = std::string(argv[5]);
-    std::string videoCodec = std::string(argv[6]);
-    std::string audioCodec = std::string(argv[7]);
+    std::vector<std::string> videoCodec = XMLParser::split(std::string(argv[6]), "|");
+    std::vector<std::string> audioCodec = XMLParser::split(std::string(argv[7]), "|");
+    std::string videoEncoder = std::string(argv[8]);
+    std::string audioEncoder = std::string(argv[9]);
     std::vector<std::string> fileList = getFilesInDir(folder);
     
     // Exit if there is no File to process
@@ -45,12 +47,12 @@ int main(int argc, char** argv)
     for(unsigned int i = 0; i < fileList.size(); i++)
     {
         VideoFile tmpVideo = VideoFile();        
-        
         tmpVideo.parseFile(folder + fileList.at(i));
+        tmpVideo.setEncoders(videoEncoder, audioEncoder);
+        
         if(tmpVideo.calculateOffsets(timestringStart, timestringEnd, XMLParser::split(convention, "|")))
         {
             std::cout << "File: " << fileList.at(i) << "\nStart: " << tmpVideo.getOffsetStart() + " | Duration: " + tmpVideo.getOffsetEnd() + " | Video Codec: " + tmpVideo.getVideoCodec() + " | Audio Codec: " + tmpVideo.getAudioCodec() + "\n" << std::endl;
-        
             tmpVideo.encodeToNewFile(videoCodec, audioCodec, outputFormat);
         }
         else

@@ -24,6 +24,7 @@
 #define VIDEOFILE_HPP
 
 #include <cstring>
+#include <vector>
 #include "xmlparser.hpp"
 
 class VideoFile
@@ -35,9 +36,12 @@ class VideoFile
         std::string path;
         std::string videoCodec;
         std::string audioCodec;
+        std::string videoEncoder;
+        std::string audioEncoder;
         
     public:
         VideoFile(void);
+        void setEncoders(std::string videoEncoder, std::string audioEncoder);
         int getDuration(void);
         std::string getOffsetStart(void);
         std::string getOffsetEnd(void);
@@ -46,7 +50,7 @@ class VideoFile
         std::string getAudioCodec(void);
         bool parseFile(std::string path);
         bool calculateOffsets(std::string startTime, std::string endTime, std::vector<std::string> patterns);
-        bool encodeToNewFile(std::string videoCodec, std::string audioCodec, std::string fileType);
+        bool encodeToNewFile(std::vector<std::string> videoCodec, std::vector<std::string> audioCodec, std::string fileType);
         
     private:
         void parseFromXML(std::string xml);

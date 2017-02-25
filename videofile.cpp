@@ -14,7 +14,6 @@
  */
 
 #include <string>
-
 #include "include/videofile.hpp"
 
 VideoFile::VideoFile(void)
@@ -25,6 +24,14 @@ VideoFile::VideoFile(void)
     this->path = "";
     this->audioCodec = "";
     this->videoCodec = "";
+    this->audioEncoder = "";
+    this->videoEncoder = "";
+}
+
+void VideoFile::setEncoders(std::string videoEncoder, std::string audioEncoder)
+{
+    this->videoEncoder = videoEncoder;
+    this->audioEncoder = audioEncoder;
 }
 
 int VideoFile::getDuration(void)
@@ -319,33 +326,57 @@ bool VideoFile::calculateOffsets(std::string startTime, std::string endTime, std
     return false;
 }
 
-bool VideoFile::encodeToNewFile(std::string videoCodec, std::string audioCodec, std::string fileType)
+bool VideoFile::encodeToNewFile(std::vector<std::string> videoCodec, std::vector<std::string> audioCodec, std::string fileType)
 {
+    bool audioFound = false;
+    bool videoFound = false;
     std::string outputPath = this->path;
-    outputPath = outputPath.substr(0, outputPath.find_last_of(".") - 1) + "_enc" + outputPath.substr(outputPath.find("."));
+    outputPath = outputPath.substr(0, outputPath.find_last_of(".") - 1) + "_enc." + fileType;
     
     std::string ffmpeg = "ffmpeg -y -loglevel quiet -ss " + this->offsetStart + " -i " + this->path;
     
-    if(this->videoCodec.compare(videoCodec) == 0 || this->videoCodec.length() == 0)
+    for(unsigned int i = 0; i < videoCodec.size(); i++)
     {
-        ffmpeg += " -c:v copy";
-    }
-    else
-    {
-        ffmpeg += " -c:v libx264 -crf 25";
+        if(this->videoCodec.compare(videoCodec.at(i)) == 0 || this->videoCodec.length() == 0)
+        {
+            ffmpeg += " -c:v copy";
+            videoFound = true;
+            break;
+        }
     }
     
-    if(this->audioCodec.compare(audioCodec) == 0)
+    if(!videoFound)
     {
-        ffmpeg += " -c:a copy";
-    }    
-    else if(this->audioCodec.length() == 0)
-    {
-        ffmpeg += " -an";
+        if(this->videoCodec.length() == 0)
+        {
+            ffmpeg += " -vn";
+        }
+        else
+        {
+            ffmpeg += " -c:v " + this->videoEncoder;
+        }
     }
-    else
+    
+    for(unsigned int i = 0; i < audioCodec.size(); i++)
     {
-        ffmpeg += " -c:a libmp3lame -q:a 5";
+        if(this->audioCodec.compare(audioCodec.at(i)) == 0)
+        {
+            ffmpeg += " -c:a copy";
+            audioFound = true;
+            break;
+        }    
+    }
+    
+    if(!audioFound)
+    {
+        if(this->audioCodec.length() == 0)
+        {
+            ffmpeg += " -an";
+        }
+        else
+        {
+            ffmpeg += " -c:a " + this->audioEncoder;
+        }
     }
     
     ffmpeg += " -t " + this->offsetEnd + " -f " + fileType + " \"" + outputPath + "\"";

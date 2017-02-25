@@ -4,4 +4,15 @@
         <activeConfTypeElem>1</activeConfTypeElem>
         <activeConfIndexElem>0</activeConfIndexElem>
     </data>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/home/roddel/Dokumente/NetbeansProjects/VSyncer/main.cpp</file>
+            <file>file:/home/roddel/Dokumente/NetbeansProjects/VSyncer/include/main.hpp</file>
+            <file>file:/home/roddel/Dokumente/NetbeansProjects/VSyncer/include/videofile.hpp</file>
+            <file>file:/home/roddel/Dokumente/NetbeansProjects/VSyncer/xmlparser.cpp</file>
+            <file>file:/home/roddel/Dokumente/NetbeansProjects/VSyncer/videofile.cpp</file>
+            <file>file:/home/roddel/Dokumente/NetbeansProjects/VSyncer/include/xmlparser.hpp</file>
+        </group>
+    </open-files>
 </project-private>
