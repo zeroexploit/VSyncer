@@ -197,13 +197,13 @@ bool VideoFile::calculateOffsets(std::string startTime, std::string endTime, std
         int secondDiffStart = secondTimeStart - second;
 
         // File starts after Start Time        
-        if(hourDiffStart < 0)
+        if(hourDiffStart < 0 || (hourDiffStart == 0 && minuteDiffStart < 0))
         {
             hourDiffStart = 0;
             minuteDiffStart = 0;
             secondDiffStart = 0;
         }
-
+        
         if(minuteDiffStart < 0)
         {
             if(hourDiffStart > 0)
@@ -236,7 +236,7 @@ bool VideoFile::calculateOffsets(std::string startTime, std::string endTime, std
         int secondDuraDiff = secondTimeEnd - second - secondDiffStart;
 
         // File Ends after End Time
-        if(hourDuraDiff < 0)
+        if(hourDuraDiff < 0 || (hourDuraDiff == 0 && minuteDuraDiff < 0))
         {
             hourDuraDiff = 0;
             minuteDuraDiff = 0;
@@ -276,6 +276,12 @@ bool VideoFile::calculateOffsets(std::string startTime, std::string endTime, std
             {
                 return false;
             }
+        }
+        
+         // File Ends before start Time
+        if((hour * 60 * 60) + (minute * 60) + second + this->duration < (hourTimeStart * 60 * 60) + (minuteTimeStart * 60) + secondTimeStart)
+        {
+            return false;
         }
 
         // Set the Values for the start Time
