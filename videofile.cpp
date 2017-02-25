@@ -245,14 +245,28 @@ bool VideoFile::calculateOffsets(std::string startTime, std::string endTime, std
 
         if(minuteDuraDiff < 0)
         {
-            hourDuraDiff--;
-            minuteDuraDiff = 60 + minuteDuraDiff;
+            if(hourDuraDiff > 0)
+            {
+                hourDuraDiff--;
+                minuteDuraDiff = 60 + minuteDuraDiff;
+            }
+            else
+            {
+                minuteDuraDiff = 0;
+            }
         }
 
         if(secondDuraDiff < 0)
         {
-            minuteDuraDiff--;
-            secondDuraDiff = 60 + secondDuraDiff;
+            if(minuteDuraDiff > 0)
+            {
+                minuteDuraDiff--;
+                secondDuraDiff = 60 + secondDuraDiff;
+            }
+            else
+            {
+                secondDuraDiff = 0;
+            }
         }
 
         // If everything is 0 than the file is not inside the Time

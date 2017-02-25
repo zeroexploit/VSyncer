@@ -18,7 +18,7 @@
 int main(int argc, char** argv)
 {
     // Say Hello and parse the Command Line Arguments
-    std::cout << "VSyncer v.1.1.0\n\nUsage: vsyncer [Filename Convention] [Video Folder] [Start Time] [End Time] [Output Format] [Required Video Codec] [Required Audio Codec] [Video Encoder] [Audio Encoder]\n" << std::endl;
+    std::cout << "VSyncer v.1.1.0\nAuthor: Joern Roddelkopf\n\nUsage: vsyncer [Filename Convention] [Video Folder] [Start Time] [End Time] [Output Format] [Required Video Codec] [Required Audio Codec] [Video Encoder] [Audio Encoder]\n" << std::endl;
     
     if(argc < 10)
     {
@@ -36,6 +36,12 @@ int main(int argc, char** argv)
     std::string videoEncoder = std::string(argv[8]);
     std::string audioEncoder = std::string(argv[9]);
     std::vector<std::string> fileList = getFilesInDir(folder);
+    
+    // Make sure the Path ends with /
+    if(folder.at(folder.length() - 1) != '/')
+    {
+        folder += "/";
+    }
     
     // Exit if there is no File to process
     if(fileList.size() == 0)
