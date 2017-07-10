@@ -148,7 +148,7 @@ void VideoFile::parseFromXML(std::string xml)
 bool VideoFile::calculateOffsets(std::string startTime, std::string endTime, std::vector<std::string> patterns)
 {
     std::string filename = this->path.substr(path.find_last_of("/") + 1);
-    
+
     for(unsigned int i = 0; i < patterns.size(); i++)
     {
         std::string pattern = patterns.at(i);
@@ -188,7 +188,7 @@ bool VideoFile::calculateOffsets(std::string startTime, std::string endTime, std
         int hourTimeEnd = std::stoi(endTime.substr(0, 2));
         int minuteTimeEnd = std::stoi(endTime.substr(3, 2));
         int secondTimeEnd = std::stoi(endTime.substr(6, 2));
-
+        
         ///----------------------
 
         // Calculate the start Time
