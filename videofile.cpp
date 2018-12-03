@@ -353,7 +353,7 @@ bool VideoFile::encodeToNewFile(std::vector<std::string> videoCodec, std::vector
     std::string outputPath = this->path;
     outputPath = outputPath.substr(0, outputPath.find_last_of(".") - 1) + "_enc." + fileType;
     
-    std::string ffmpeg = "ffmpeg -y -loglevel quiet -ss " + this->offsetStart + " -i " + this->path;
+    std::string ffmpeg = "ffmpeg -y -loglevel quiet -ss " + this->offsetStart + " -i \"" + this->path + "\"";
     
     for(unsigned int i = 0; i < videoCodec.size(); i++)
     {
